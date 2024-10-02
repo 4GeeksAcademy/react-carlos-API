@@ -12,18 +12,28 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+			personajes: null,
+			favoritos: [],
 		},
+
 		actions: {
 			// Use getActions to call a function within a fuction
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
 			},
-			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
+
+			loadPersonajes: async () => {
+				const response = await fetch('https://dragonball-api.com/api/characters')
+				const personajesData = await response.json()
+					if(response.ok) {
+						setStore({personajes: personajesData.results})
+					} else {
+						setStore({favoritos: false})
+					}
+					console.log(getStore())
 			},
+
 			changeColor: (index, color) => {
 				//get the store
 				const store = getStore();
